@@ -75,18 +75,19 @@ Furthermore, we give a more convenient way to run the experiment. In the `experi
 provided. Use `bash shell_file_name.sh` to automatically run the corresponding experiments and get the results. See the 
 following content:
 
-###### Gained affinity comparison
-To run the gained affinity comparison of our approach and three baselines, just run the `bash gained_affinity_comparison.sh` in 
+###### Quality experiment (Gained affinity comparison)
+To run the gained affinity comparison of our approach and three baselines, just run the `bash quality_experiment.sh` in 
 the `experiment` directory. The shell console will require you to enter three parameters: 1. input file path; 2. output 
 file path; 3. maximum runtime. These three parameters are all compulsory. An example is 
 `../dataset/M1.json ../output/shell_M1_test.json 60`, which will take `M1.json` as the input and compare their gained 
 affinity within 60 seconds.
-
-###### Data splitting comparison
-To be added.
+   
+###### Efficiency Experiment
+To run the algorithm with different runtime constraints,  run the `bash efficiency_experiment.sh`
+in the `experiment` directory. See the console output for details of the input parameters.
 
 ###### Algorithm selection comparison
-To run the algorithm selection comparison of GCN-Based, only CG and only MIP,  run the `bash algorithm_selection_comparison.sh`
+To run the algorithm selection comparison of GCN-Based, only CG and only MIP,  run the `bash select_algorithms_experiment.sh`
 in the `experiment` directory. The shell console will require you to enter three parameters: 1. input file path; 
 2. output file path; 3. maximum runtime. These three parameters are all compulsory. An example is 
 `../dataset/M1.json ../output/shell_M1_test.json 60`, which will take `M1.json` as the input and compare their gained 
