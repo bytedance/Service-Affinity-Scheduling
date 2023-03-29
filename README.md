@@ -1,6 +1,6 @@
 ## Introduction
 
-This repository contains the implementation of the algorithm to **resource allocation with service affinity (RASA)** 
+This repository contains the implementation of the algorithm to **scheduling with service affinity (RASA)** 
 problem. Specifically, we consider the constrained optimization problem that aims to find a mapping from containers
 to machines in a way that maximizes the affinity between services. If we could benefit from collocating two containers
 on the same machine or the same group of machines, then we say the services of the two containers have an affinity 
