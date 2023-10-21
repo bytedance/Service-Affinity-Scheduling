@@ -11,6 +11,12 @@ In this repository, we provide a novel solver-heuristic hybrid approach to solve
 ensures both computational efficiency and near-optimality. This is especially helpful for problems on a large industrial 
 scale.
 
+## Omitted part in the paper
+For the reference of the omitted proof in the paper, please refer to the file `source_code/data_splitting/omitted_proof.pdf` in this repo.
+
+For the reference of the formulations in column generation algorithm, please refer to the file `source_code/scheduling_algorithm_pool/scheduler_column_generation/omitted_formulations.pdf` in this repo.
+
+
 ## Requirements
 
 Please check the following requirements to ensure you can run the code successfully.
