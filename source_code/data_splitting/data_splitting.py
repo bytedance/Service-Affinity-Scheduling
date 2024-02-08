@@ -22,11 +22,13 @@ from source_code.data_splitting.non_affinity_partitioning import separate_not_in
 from source_code.data_splitting.master_affinity_partitioning import separate_non_master
 from source_code.data_splitting.compatibility_partitioning import separate_different_node_level
 from source_code.data_splitting.balanced_partitioning import separate_balanced_cuts
+from source_code.data_splitting.random_partitioning import random_partitioning
 import numpy as np
 import math
 
 
-def data_splitting_workflow(p, service_num, d, service_node_level_list, delete_ratio=None, K=None):
+def data_splitting_workflow(p, service_num, d, service_node_level_list, delete_ratio=None, K=None,
+                            splitting_method="default"):
     """
     Control the workflow of data splitting, including four different data splitting.
 
@@ -52,11 +54,22 @@ def data_splitting_workflow(p, service_num, d, service_node_level_list, delete_r
 
     # Multi-stage feature-oriented partitioning
     print("Proceed multi-stage data splitting...")
-    separate_not_in_link(auxiliary_p, service_num, cut_sets, [0], -1)
-    separate_non_master(auxiliary_p, service_num, d, delete_ratio, cut_sets, [0], -1)
-    cut_node_level_2_index_dict = separate_different_node_level(auxiliary_p, service_num, cut_sets,
-                                                                service_node_level_list, [0], 100000)
-    max_cut_num, cut_sets = separate_balanced_cuts(auxiliary_p, service_num, cut_sets, service_node_level_list, K)
+    if splitting_method == "default":
+        separate_not_in_link(auxiliary_p, service_num, cut_sets, [0], -1)
+        separate_non_master(auxiliary_p, service_num, d, delete_ratio, cut_sets, [0], -1)
+        cut_node_level_2_index_dict = separate_different_node_level(auxiliary_p, service_num, cut_sets,
+                                                                    service_node_level_list, [0], 100000)
+        max_cut_num, cut_sets = separate_balanced_cuts(auxiliary_p, service_num, cut_sets, service_node_level_list, K)
+    elif splitting_method == "kahip":
+        pass
+    elif splitting_method == "nopart":
+        max_cut_num = 2
+        cut_sets = np.zeros(service_num, dtype=int)  # cut_sets remain the same
+    elif splitting_method == "randompart":
+        max_cut_num, cut_sets = random_partitioning(cut_sets, service_num, K)
+    else:
+        raise ValueError\
+            ("INVALID data splitting method name, please enter default/kahip/nopart/randompart as the param.")
 
     # By the way, re-indexing cut_sets
     cut_ids = {}

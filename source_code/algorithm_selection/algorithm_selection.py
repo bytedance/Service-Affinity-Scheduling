@@ -68,6 +68,27 @@ def algorithm_selection_and_apply(p, u_r, q, d, d_r, s_type, cut_sets, max_cut_n
     # Estimate the runtime of each sub-problem
     est_time_out_dict = estimate_runtime(cut_sets, max_time, max_cut_num, p)
 
+    # ################################# Notice #################################
+    #   Here in algorithm selection, we use three algorithms in our algorithm pools:
+    #     - MIP-Based algorithm, Column-Generation algorithm and First-Fit algorithm
+    #   MIP-Based algorithm and Column-Generation algorithm are designed to schedule non-trivial services, while the
+    # First-Fit is designed to schedule trivial service sets (service number is large but affinity is low).
+    #   With non-trivial services considered in scheduling (with very low cost algorithm, i.e., First Fit), we have
+    # more flexibility in scheduling containers. Under this circumstance, we do not need to alter the machine set.
+    # We can assign a batch of original and complete machines to each subproblem. By doing so, a machine is able
+    # accommodate more collocated containers and thus further improves the affinity.
+    #
+    #   So, this code deals the trivial services with First-Fit, while non-trivial services with MIP-Based or Column
+    # generation. All containers in the cluster maybe moved, but we are able to gain more affinity (or localized
+    # traffic).
+    #   If the developer wish to control the number of moved containers, then it is suggested that the developers
+    # choose not to reschedule trivial services. The developer should do the following work:
+    #   - Prior to 'algorithm_selection_and_apply' function, construct a new machine set (new u_r and q), where the
+    #   resources of trivial services are subtracted from the total resources of these machines. And use the new u_r
+    #   and q as the input of this function
+    #   - Remove trivial services set from cut_sets, which is the last set in the cut_sets.
+    # ##########################################################################
+
     # For each cut, select an appropriate algorithm and apply the selected algorithm to it.
     curr_remain_q = np.asarray(q.copy())
     for cut_id in range(max_cut_num - 1):
